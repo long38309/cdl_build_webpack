@@ -3,8 +3,9 @@ const assert = require('assert');
 describe('webpack.base.js test case', () => {
     const baseConfig = require('../../lib/webpack.base.js');
 
+    console.log(baseConfig)
+
     it('entry', () => {
-        assert.equal(baseConfig.entry.index, '/Users/chendelong/Documents/vue/webpack4/builder-webpack/test/smoke/template/src/index/index.js');
-        assert.equal(baseConfig.entry.seach, '/Users/chendelong/Documents/vue/webpack4/builder-webpack/test/smoke/template/src/seach/index.js');
+        assert.equal(baseConfig.entry.index.indexOf('/test/smoke/template/src/index/index.js') > -1, true);
     });
 });
