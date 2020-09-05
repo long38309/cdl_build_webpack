@@ -1,0 +1,66 @@
+webpack 起步
+1）首先初始化一个package.json
+npm init -y
+2)安装webpack 和 webpack-cli
+npm install webpack webpack-cli --save-dev
+3)babel-loader 解析ES6
+babel-loader依赖于.babelrc配置文件  
+安装babel:cnpm i @babel/core @babel/preset-env babel-loader -D
+4)webpack解析react
+cnpm i react react-dom @babel/preset-react -D
+5)webpack 解析css -- css-loader 加载.css文件，并转换成commonjs对象，style-loader将样式通过<style></style>标签插入到head中
+cnpm i style-loader css-loader -D    记得loader解析是链式的，从右往左
+6)webpack 解析less  -- less-loader
+cnpm i less less-loader -D
+7）webpack解析图片和字体
+cnpm i file-loader -D 
+8)url-loader也可以处理字体和图片，可以把小图片变成base64位转换
+cnpm i url-loader -D
+9)webpack里有个热更新  webpack-dev-server    ---不输出文件，放在内存中
+cnpm install webpack-dev-server -D
+10)文件指纹，指的是在加上一个后缀，一般用hash。可以用来做版本管理
+11)webpack使用插件MiniCssExtractPlugin把css从bundle里提取出来，生成一个文件
+cnpm i mini-css-extract-plugin -D
+12)webpack里代码的压缩 html,css,js代码    webpack里内置了uglifyjs-webpack-plugin,js默认压缩
+css的压缩 cnpm i optimize-css-assets-webpack-plugin -D  cnpm i cssnano -D
+html的压缩 cnpm i html-webpack-plugin -D
+13)webpack 自动删除构建生成的输出文件夹
+cnpm i clean-webpack-plugin -D
+14)使用postCSS插件autoprefixer自动补齐,构建前补齐前缀
+cnpm i postcss-loader autoprefixer -D
+15)rem 的适配  通过px2rem-loader自动把px 转换成rem.利用手淘lib-flexible库利用屏幕的宽高动态计算根元素font-size的值
+cnpm i px2rem-loader -D  cnpm i lib-flexible -S
+16)资源内联的好处---页面框架的初始化脚本lib-flexible库，css内联避免页面闪动  减少http的网络请求数
+HTML和JS的内联使用raw-loader   内联之前最好使用 babel-loader进行转换
+cnpm i raw-loader@0.5.1 -D
+CSS 内联，可以借助style-loader或者html-inline-css-webpack-plugin,把打包好的css插入到<head></head>里。
+17)多页面打包，多个入口--好处：每个页面之间是解耦 ，对SEO更友好.
+    利用glob来获取目录下的文件   多个入口，entry是个数组，每一个页面对应一个htmlWebPackPlgin  进行压缩
+18）source map 开发环境打开，线上环境关闭。。。方便开发看代码
+19)可以用html-webpack-externals-plugin把vue，react等框架代码抽离出来放到CDN，减少打出包大小 ，也可以用SplitChunksPlugin
+提取框架代码
+20)webpack4.0,mode为production时，默认开启tree shaking，作用是引用多个方法时，只有用到的方法才会打包到bundle.js里
+21)webpack4.0,mode为production时是，默认开启scope hoisting.能过scope hoisting可以减少函数声明代码和内存开销
+22)代码分割--懒加载JS代码 1）抽离相同代码到一个共享模块 2）脚本懒加载，使得初始化下载的代码更小(首页优化)
+动态import,通过babel的插件帮我们进行转换 cnpm i @babel/plugin-syntax-dynamic-import -S
+23)webpack4与eslint使用，规范团队代码 也可以CI，CD里进行控制
+cnpm i eslint eslint-plugin-import eslint-plugin-react eslint-plugin-jsx-a11y -D
+cnpm i eslint-loader -D   cnpm i babel-eslint -D  cnpm i eslint-config-airbnb -D
+24)webpack打包组件或者一些基础库，上传到npm
+可以用terser-webpack-plugin进行代码压缩  cnpm i terser-webpack-plugin -D
+output: {
+        filename:'[name].js',
+        library:'largeNumber',
+        libraryTarget:'umd',
+        libraryExport:'default'
+    }
+25)客户端渲染与服务端渲染(ssr)
+渲染：html树 + css + js + data->渲染后的HTML
+cnpm i express -D
+26)优化命令行的信息  stats
+cnpm i friendly-errors-webpack-plugin -D 进行友好的提示
+27)获取构建的错误-- 上报错误，持续集成等。。
+compiler在每次构建结束后会触发done这个hook，process.exit主动处理构建报错
+28)配置的合理拆分
+cnpm i webpack-merge -D  可以用esLint来规范构建脚本，排查错误
+19)冒烟测试，看自己的脚本打包出来的包有没有html,css,js等
