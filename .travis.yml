@@ -15,5 +15,5 @@ install:
   - npm install -D
   - cd ../../../
 
-scripte:
+script:
   - npm run test
